@@ -1,0 +1,156 @@
+body,ol,ul,h1,h2,h3,h4,h5,h6,p,th,td,dl,dd,form,fieldset,legend,input,textarea,select{margin:0;padding:0} 
+body{font:12px 'Microsoft Yahei','微软雅黑',Tahoma,Consolas,Arial;background:#fff;-webkit-text-size-adjust:100%;position: relative;box-sizing:border-box;-moz-box-sizing:border-box; /* Firefox */-webkit-box-sizing:border-box; /* Safari */} 
+a{color: #000000;text-decoration:none} 
+a:hover{color:#cd0200;text-decoration:underline;transition: all 218ms cubic-bezier(.3,0,.6,1);} 
+em{font-style:normal} 
+li{list-style:none} 
+img{border:0;vertical-align:middle} 
+table{border-collapse:collapse;border-spacing:0} 
+p{word-wrap:break-word}
+
+
+header{
+	background-color: #282828;
+}
+
+.wrap{
+	height: 70px;
+	
+	width: 75%;
+	margin: 0 auto;
+	position: relative;
+}
+.wrap>ul>li{
+	font-size: 20px;
+	line-height: 70px;
+	display: block;
+	position: relative;	
+	float: left;
+	margin-right: 50px;
+}
+.wrap>ul>li:nth-child(1){
+	font-weight: 700;
+}
+.wrap>ul>li:nth-child(1)>a{
+	color: #0080c0;
+}
+.wrap a{
+	text-decoration:none;
+	
+}
+
+.wrap>ul>li:nth-child(1)>a:hover{
+	color: #f27900;
+	
+}
+.wrap>ul>li:last-child{
+	margin-right: 0;
+	margin-top: -7.5px;
+	float: right;
+}
+.wrap input{
+	padding: 5px 20px 5px 5px;
+}
+
+.wrapList{
+	color: #ffffff;
+}
+
+.wrapList:hover{
+	color: #8FE8E2;
+	text-shadow: -1px 0 6px #22b6ab;
+}
+.active{
+	color: #8FE8E2;
+	text-shadow: -1px 0 6px #22b6ab;	
+}
+
+.transitionLayer{
+	
+	height: 180px;
+	background-color: #22b6ab;
+}
+
+footer{
+	background-color: #404040;
+	height: 80px;
+}
+footer>div{
+	width: 75%;
+	margin: 0 auto;
+	line-height: 80px;
+	font-size: 18px;
+	color: #fff;
+	font-family: Consolas;	
+}
+
+
+/* editorBtn */
+.editorBtn>img{
+	
+	position: fixed;
+	bottom: 200px;
+	right: 100px;
+}
+.editorBtn>img:hover{
+	background-color: #555555;
+}
+
+/* editor */
+.previousText{
+	width: 45%;
+	float: left;
+	margin-left: 30px;
+	
+}
+.nextText{
+	width: 45%;
+	float: right;	
+	border: 1px solid #cccccc;
+	padding: 8px;
+	margin-right: 30px;
+	height: 956px; /* 因为markdown.css中设置了padding: 30px */
+	overflow: auto;
+}
+
+
+.editor::after{
+	content: '';
+	display: block;
+	clear: both;
+	
+}
+#previousText{
+	margin-left: -8px;
+	height: 1000px;
+	width: 100%;
+	font-size: 16px;
+	padding: 8px;
+	white-space:nowrap; 
+	overflow:auto;
+	line-height: 110%;
+}
+
+@media screen and (max-width: 1100px){
+	.previousText,.nextText{	
+		float: 	none;
+		width: auto;
+		margin: 0px;
+	}
+	.editor{
+		height: inherit;
+		margin: 0px;
+	}
+}
+/* 提交按钮 */
+#submitBtn{
+	float: right;
+	margin: 10px 20px 0 0;
+	clear: both;
+}
+
+
+
+
+
+
