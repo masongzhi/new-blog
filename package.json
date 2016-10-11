@@ -10,12 +10,11 @@
   "author": "masongzhi",
   "license": "ISC",
   "dependencies": {
-    "module": "^1.2.5",
+    "jquery": "^3.1.1",
     "react": "^15.3.2",
     "react-dom": "^15.3.2",
     "react-router": "^2.8.1",
-    "showdown": "^1.4.3",
-    "simditor": "^2.3.6"
+    "showdown": "^1.4.3"
   },
   "devDependencies": {
     "babel": "^6.5.2",

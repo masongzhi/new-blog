@@ -2,8 +2,8 @@ body,ol,ul,h1,h2,h3,h4,h5,h6,p,th,td,dl,dd,form,fieldset,legend,input,textarea,s
 body{font:12px 'Microsoft Yahei','微软雅黑',Tahoma,Consolas,Arial;background:#fff;-webkit-text-size-adjust:100%;position: relative;box-sizing:border-box;-moz-box-sizing:border-box; /* Firefox */-webkit-box-sizing:border-box; /* Safari */} 
 a{color: #000000;text-decoration:none} 
 a:hover{color:#cd0200;text-decoration:underline;transition: all 218ms cubic-bezier(.3,0,.6,1);} 
-em{font-style:normal} 
-li{list-style:none} 
+ 
+ 
 img{border:0;vertical-align:middle} 
 table{border-collapse:collapse;border-spacing:0} 
 p{word-wrap:break-word}
@@ -130,8 +130,14 @@ footer>div{
 	overflow:auto;
 	line-height: 110%;
 }
-
-@media screen and (max-width: 1100px){
+/* 当屏幕小于1300px时清除margin */
+@media screen and (max-width: 1300px){
+	.previousText,.nextText{	
+		margin: 0px;
+	}
+}
+/* 当屏幕小于800px时上下显示 */
+@media screen and (max-width: 800px){
 	.previousText,.nextText{	
 		float: 	none;
 		width: auto;

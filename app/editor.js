@@ -21,11 +21,11 @@ export default React.createClass({
 				
 		function dataSubmit(){
 			$.ajax({
-				url:"http://localhost/aaa.php",
+				url:"http://localhost/blog2/php/aaa.php",
 				type:"post",
 				dataType:"json",
 				data:{
-					html:"123454"
+					html: html
 				},
 				async:true,
 				success:function(data){

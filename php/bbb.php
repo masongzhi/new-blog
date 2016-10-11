@@ -1,4 +1,5 @@
 <?php
+	header("Access-Control-Allow-Origin: http://localhost:8080");
     header("Context-Type:text/html;charset=utf-8");
 	$data = $_REQUEST["flag"];
 	$_mysqli = new mysqli('localhost','root','masongzhi','masongzhi');
