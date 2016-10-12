@@ -89,14 +89,14 @@ footer>div{
 .editorBtn>img{
 	
 	position: fixed;
-	bottom: 200px;
-	right: 100px;
+	bottom: 160px;
+	right: 5%;
 }
 .editorBtn>img:hover{
 	background-color: #555555;
 }
 
-/* editor */
+/* component_editor */
 .previousText{
 	width: 45%;
 	float: left;
@@ -155,7 +155,24 @@ footer>div{
 	clear: both;
 }
 
-
+/* component_article */
+.article{
+	margin-top: -30px;/* 不能设置，因为其他相关选择器设置了!important属性，改变了优先度 */
+}
+.article_blog{
+	margin-top: 30px;
+}
+.article_blog>div{
+	height: 300px;
+	overflow: hidden;
+	text-overflow:ellipsis;
+}
+.article_blog:after{
+	content: '';
+	display: block;
+	margin-top: 30px;
+	border-bottom: 2px dashed #666666;
+}
 
 
 

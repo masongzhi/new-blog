@@ -19,3 +19,19 @@
 
   从GitHub抓包得到css文件，筛选出markdown样式<https://github.com/masongzhi/github-Markdown-style>
 
+
+`2016/10/13`
+
+### Update
+
+* 更新编写的按钮的right属性为百分比；
+
+  ```css
+  .editorBtn>img{
+  	
+  	position: fixed;
+  	bottom: 160px;
+  	right: 5%;
+  }
+  ```
+

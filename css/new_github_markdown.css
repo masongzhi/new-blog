@@ -71,12 +71,20 @@
     border: 0
 }
 
+
 .container blockquote {
     padding: 0 1em;
     color: #777;
     border-left: 0.25em solid #ddd
 }
-
+.container blockquote{
+	margin-left: 0;
+	margin-right: 0;
+}
+/* .container blockquote p{
+	white-space: nowrap;
+	overflow: auto;
+} */
 .container blockquote>:first-child {
     margin-top: 0
 }

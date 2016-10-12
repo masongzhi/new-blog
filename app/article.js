@@ -1,17 +1,21 @@
 import React from 'react'
 var $ = require('jquery');
+import { Link } from 'react-router'
 
 export default React.createClass({
 	getInitialState: function(){
+		
 		return {
-			textValue: "dfdfd"
+			textValue: "",
+			timeline: ""
 		};
 	},
 
 	componentDidMount: function(){
 		var _this = this,
 			jsonArr = [],
-			articles = [];
+			articles = [],
+			timelines = [];
 		
 		$.ajax({
 			url:"http://localhost/blog2/php/bbb.php",
@@ -33,10 +37,10 @@ export default React.createClass({
 				
 				for(var x in jsonArr){
 					articles.push(jsonArr[x].article)
+					timelines.push(jsonArr[x].timeline)
 				}
 				
-				// console.log(articles);
-				_this.setState({textValue: articles[2]});
+				_this.setState({textValue: articles,timeline: timelines});
 				
 			
 				
@@ -47,19 +51,41 @@ export default React.createClass({
 		});
 		
 	},
-
 	
-
-	render() {
+	createMarkup: function(){
 		var textValue = this.state.textValue;
 		var showdown  = require('showdown'),
 			converter = new showdown.Converter(),
 			text      = textValue,
-			html      = converter.makeHtml(text);
+			newText   = [],
+			html;
 			
+		for(var x in text){
+			html = converter.makeHtml(text[x]);
+			newText.push(html);
+		}
+		return newText;
+		
+	},
+	
+
+	render() {
+		var timeline = this.state.timeline,
+			i = 0,
+			name;
 		return (
 			<div className="article">
-				<div dangerouslySetInnerHTML={{__html: html}} />
+				{
+					this.createMarkup().map(function(text){
+						name = timeline[i];
+						i++;
+						return (
+							<div className="article_blog" >
+								<div name={name} dangerouslySetInnerHTML={{__html:text}} />
+							</div>
+						)
+					})
+				}
 			</div>	
 		)
 	}

@@ -7,6 +7,7 @@ import NavLink from './NavLink'
 
 
 export default React.createClass({
+
 	
   render() {
     return (
@@ -32,7 +33,7 @@ export default React.createClass({
 			</header>
 			
 			<div className="container">
-				{this.props.children || <Article/>}		
+				{this.props.children || <Article />}						
 			</div>
 			
 				
