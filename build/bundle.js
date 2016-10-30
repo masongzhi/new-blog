@@ -66,6 +66,10 @@
 
 	var _article2 = _interopRequireDefault(_article);
 
+	var _article_list = __webpack_require__(241);
+
+	var _article_list2 = _interopRequireDefault(_article_list);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	(0, _reactDom.render)(_react2.default.createElement(
@@ -74,7 +78,9 @@
 		_react2.default.createElement(
 			_reactRouter.Route,
 			{ path: '/', component: _main2.default },
-			_react2.default.createElement(_reactRouter.Route, { path: '/editor', component: _editor2.default })
+			_react2.default.createElement(_reactRouter.Route, { path: '/editor', component: _editor2.default }),
+			_react2.default.createElement(_reactRouter.Route, { path: '/article_list/:articleName', component: _article_list2.default }),
+			_react2.default.createElement(_reactRouter.Route, { path: '/page/:page', component: _article2.default })
 		)
 	), document.getElementById('container'));
 
@@ -27129,6 +27135,13 @@
 
 	exports.default = _react2.default.createClass({
 		displayName: 'main',
+
+
+		componentDidUpdate: function componentDidUpdate() {
+			//跳到页眉,因为react-router占用了hash，所以不能用锚点
+			var dd = document.getElementsByClassName("wrap")[0].scrollIntoView();
+		},
+
 		render: function render() {
 			return _react2.default.createElement(
 				'div',
@@ -27220,32 +27233,118 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
+	var _reactRouter = __webpack_require__(172);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var $ = __webpack_require__(237);
-
 	exports.default = _react2.default.createClass({
 		displayName: 'article',
 
 		getInitialState: function getInitialState() {
+			var currentPage = this.props.params ? this.props.params.page.match(/\d+/).toString() : 1;
+
 			return {
-				textValue: "dfdfd"
+				textValue: "数据获取中",
+				id: "",
+				page: 1,
+				currentPage: currentPage
+
 			};
 		},
 
 		componentDidMount: function componentDidMount() {
-			var _this = this;
+
+			var _this = this,
+			    jsonArr = [],
+			    articles = [],
+			    ids = [],
+			    page,
+			    currentPage = this.state.currentPage;
+
 			$.ajax({
-				url: "/blog2/php/bbb.php",
+				url: "./php/bbb.php",
 				type: "post",
 				dataType: "json",
 				data: {
-					flag: 1
+					flag: 1,
+					currentPage: currentPage
+
 				},
 				async: true,
 				success: function success(data) {
+					console.log(data);
+					for (var i = 0; i < data.blog.length; i++) {
+						articles.push(data.blog[i].article);
+						ids.push(+data.blog[i].id);
+					}
 
-					_this.setState({ textValue: data.blog[2].article });
+					page = Math.ceil(data.pageNumber / 10);
+					_this.setState({ textValue: articles, id: ids, page: page });
+				},
+				error: function error() {
+					console.log("更新博客不成功");
+				}
+			});
+		},
+
+		createMarkup: function createMarkup() {
+			var currentPage = this.state.currentPage;
+			var textValue = this.state.textValue;
+			var showdown = __webpack_require__(238),
+			    converter = new showdown.Converter(),
+			    text = textValue,
+			    newText = [],
+			    html;
+
+			for (var x in text) {
+				html = converter.makeHtml(text[x]);
+				newText.push(html);
+			}
+			return newText;
+		},
+		createPageArr: function createPageArr() {
+			var page = this.state.page,
+			    pageArr = [],
+			    i = 1;
+
+			while (i <= page) {
+				pageArr.push(i);
+				i++;
+			}
+			return pageArr;
+		},
+		changePage: function changePage(e) {
+			var currentPage = e.target.innerHTML;
+			// console.log(e.target.innerHTML)
+
+			this.setState({ currentPage: +currentPage });
+
+			var articles = [],
+			    ids = [],
+			    _this = this,
+			    page;
+
+			$.ajax({
+				url: "http://localhost/blog2/php/bbb.php",
+				type: "post",
+				dataType: "json",
+				data: {
+					flag: 1,
+					currentPage: currentPage
+
+				},
+				async: true,
+				success: function success(data) {
+					data = data.replace(/\\\'/g, "\'");
+					console.log(data);
+					for (var i = 0; i < data.blog.length; i++) {
+						articles.push(data.blog[i].article);
+						ids.push(+data.blog[i].id);
+					}
+
+					page = Math.ceil(data.pageNumber / 10);
+					_this.setState({ textValue: articles, id: ids, page: page });
 				},
 				error: function error() {
 					console.log("更新博客不成功");
@@ -27254,16 +27353,32 @@
 		},
 
 		render: function render() {
-			var textValue = this.state.textValue;
-			var showdown = __webpack_require__(238),
-			    converter = new showdown.Converter(),
-			    text = textValue,
-			    html = converter.makeHtml(text);
+
+			var id = this.state.id,
+			    currentId,
+			    pageArr = this.createPageArr(),
+			    _this = this;
+			var hashPage = window.location.hash;
+			hashPage = hashPage.match(/page[\d+]/);
+			var i = 0;
 
 			return _react2.default.createElement(
 				'div',
 				{ className: 'article' },
-				_react2.default.createElement('div', { dangerouslySetInnerHTML: { __html: html } })
+				this.createMarkup().map(function (text) {
+
+					currentId = id[i];
+					i++;
+					return _react2.default.createElement(
+						'div',
+						{ className: 'article_blog' },
+						_react2.default.createElement(
+							_reactRouter.Link,
+							{ to: "/article_list/" + currentId },
+							_react2.default.createElement('div', { name: currentId, dangerouslySetInnerHTML: { __html: text } })
+						)
+					);
+				})
 			);
 		}
 	});
@@ -40080,19 +40195,26 @@
 			var showdown = __webpack_require__(238),
 			    converter = new showdown.Converter(),
 			    text = value,
-			    html = converter.makeHtml(text);
+			    html = converter.makeHtml(text),
+			    _this = this;
 
 			function dataSubmit() {
+
+				html = html.replace(/\'/g, "\\\'");
+
 				$.ajax({
-					url: "/blog2/php/aaa.php",
+					url: "./php/aaa.php",
 					type: "post",
-					dataType: "json",
+					// dataType:"json",
 					data: {
 						html: html
 					},
 					async: true,
 					success: function success(data) {
 						console.log(data);
+						_this.setState({ value: '##Hello World!' });
+						_this.refs.editor_textarea.value = '';
+						alert('提交成功');
 					},
 					error: function error() {
 						console.log("不成功");
@@ -40105,7 +40227,7 @@
 				_react2.default.createElement(
 					'div',
 					{ className: 'previousText' },
-					_react2.default.createElement('textarea', { name: 'previousText', id: 'previousText', onChange: this.preChange, placeholder: '\u5199\u4E0Bmarkdown\u8BED\u6CD5' })
+					_react2.default.createElement('textarea', { name: 'previousText', id: 'previousText', onChange: this.preChange, placeholder: '\u5199\u4E0Bmarkdown\u8BED\u6CD5', ref: 'editor_textarea' })
 				),
 				_react2.default.createElement('div', { className: 'nextText', dangerouslySetInnerHTML: { __html: html } }),
 				_react2.default.createElement(
@@ -40143,6 +40265,103 @@
 	  render: function render() {
 	    return _react2.default.createElement(_reactRouter.Link, _extends({}, this.props, { activeClassName: 'active' }));
 	  }
+	});
+
+/***/ },
+/* 241 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _reactRouter = __webpack_require__(172);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var $ = __webpack_require__(237);
+
+	exports.default = _react2.default.createClass({
+		displayName: 'article_list',
+
+		getInitialState: function getInitialState() {
+			return {
+				textValue: "文章获取中...",
+				timeline: ""
+			};
+		},
+		componentDidMount: function componentDidMount() {
+			var currentHref = window.location.hash,
+			    id = currentHref.match(/\d+/),
+			    _this = this,
+			    article,
+			    timeline;
+
+			$.ajax({
+				url: "./php/bbb.php?flag=-1&&article_id=" + id,
+				type: "get",
+				dataType: "json",
+				async: true,
+				success: function success(data) {
+
+					_this.setState({
+						textValue: data.article[0].article,
+						timeline: data.article[0].timeline
+					});
+				}
+			});
+		},
+
+		// componentWillUpdate: function(){
+		// console.log(1)
+		// var currentHref = window.location.hash,
+		// id = currentHref.match(/\d+/),
+		// _this = this,
+		// article,
+		// timeline;
+
+		// $.ajax({
+		// url:"http://localhost/blog2/php/bbb.php?flag=-1&&article_id=" + id,
+		// type: "get",
+		// dataType: "json",
+		// async:true,
+		// success:function(data){
+
+		// _this.setState({
+		// textValue: data.article[0].article,
+		// timeline: data.article[0].timeline
+		// })
+		// },
+		// })
+		// },
+		createMarkup: function createMarkup() {
+			var textValue = this.state.textValue;
+			var showdown = __webpack_require__(238),
+			    converter = new showdown.Converter(),
+			    text = textValue,
+			    html = converter.makeHtml(text);
+
+			return { __html: html };
+		},
+
+		render: function render() {
+			return _react2.default.createElement(
+				'div',
+				{ className: 'article_text' },
+				_react2.default.createElement(
+					'p',
+					{ className: 'article_timeline' },
+					this.state.timeline
+				),
+				_react2.default.createElement('div', { dangerouslySetInnerHTML: this.createMarkup() })
+			);
+		}
 	});
 
 /***/ }

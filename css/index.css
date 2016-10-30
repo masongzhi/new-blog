@@ -87,7 +87,7 @@ footer>div{
 
 /* editorBtn */
 .editorBtn>img{
-	
+	/* display: none; */
 	position: fixed;
 	bottom: 160px;
 	right: 5%;
@@ -162,7 +162,7 @@ footer>div{
 .article_blog{
 	margin-top: 30px;
 }
-.article_blog>div{
+.article_blog div{
 	height: 300px;
 	overflow: hidden;
 	text-overflow:ellipsis;
@@ -173,7 +173,17 @@ footer>div{
 	margin-top: 30px;
 	border-bottom: 2px dashed #666666;
 }
-
-
+/* article_text */
+.article_text{
+	box-sizing: border-box;
+    min-width: 200px;
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 45px;
+}
+.article_timeline{
+	color: #ff9326;
+	font-size: 30px;
+}
 
 

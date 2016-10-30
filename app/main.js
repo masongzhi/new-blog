@@ -8,6 +8,11 @@ import NavLink from './NavLink'
 
 export default React.createClass({
 
+  componentDidUpdate: function(){
+	//跳到页眉,因为react-router占用了hash，所以不能用锚点
+	var dd = document.getElementsByClassName("wrap")[0].scrollIntoView();
+	
+  },
 	
   render() {
     return (
@@ -32,7 +37,7 @@ export default React.createClass({
 				<div className="transitionLayer"></div>
 			</header>
 			
-			<div className="container">
+			<div className="container" >
 				{this.props.children || <Article />}						
 			</div>
 			
